@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AssemblyName>DiskLens</AssemblyName>
+    <RootNamespace>DiskLens.App</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>0.1.0</Version>
+    <Company>DiskLens</Company>
+    <Product>清简 · 磁盘助手</Product>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="../DiskLens.Core/DiskLens.Core.csproj" /></ItemGroup>
+</Project>
