@@ -42,7 +42,7 @@
             <StackPanel>
               <DockPanel><TextBlock Text="▣" Foreground="#5979E8" FontSize="22" Margin="0,0,10,0"/><StackPanel><TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14"/><TextBlock Text="{Binding Kind}" Style="{StaticResource MutedText}" Margin="0,4,0,0"/></StackPanel></DockPanel>
               <ProgressBar Value="{Binding Percent, Mode=OneWay}" Foreground="{Binding BarBrush}" Margin="0,18,0,10"/>
-              <DockPanel><TextBlock Style="{StaticResource MutedText}"><Run Text="可用 "/><Run Text="{Binding FreeText}" Foreground="#27344D"/></TextBlock><TextBlock Text="{Binding TotalText}" Style="{StaticResource MutedText}" HorizontalAlignment="Right"/></DockPanel>
+              <DockPanel><TextBlock Style="{StaticResource MutedText}"><Run Text="可用 "/><Run Text="{Binding FreeText, Mode=OneWay}" Foreground="#27344D"/></TextBlock><TextBlock Text="{Binding TotalText}" Style="{StaticResource MutedText}" HorizontalAlignment="Right"/></DockPanel>
               <Button Content="扫描此磁盘  →" Tag="{Binding Root}" Click="DriveClick" Padding="10,7" Margin="0,14,0,0" IsEnabled="{Binding DataContext.IsIdle, RelativeSource={RelativeSource AncestorType=Window}}"/>
             </StackPanel>
           </Border>
