@@ -1,12 +1,15 @@
-清简 · 磁盘助手 / DiskLens 0.1.0 预览版
+清简 · 磁盘助手 / DiskLens 0.1.1 预览版
 
 运行要求：Windows 10 22H2 或 Windows 11，x64。
 解压到本地文件夹后，双击 DiskLens.exe。无需安装 .NET，也无需管理员权限。
 
-本版本在 Linux 上完成 Windows 交叉编译，核心回归测试全部通过。
-WPF 窗口、Windows Shell 回收站尚未在 Windows 上实际验收。
+此版本修复了进度条对只读属性使用双向绑定造成的启动异常。
+仓库下载包由 Windows 自动构建、启动窗口检查通过后更新。
+真实清理与回收站操作仍需用户在测试目录中验收。
 请先使用专门的测试文件夹，并按 WINDOWS-ACCEPTANCE.md 进行验证。
 此包尚未代码签名，不是正式发布版。
+如果遇到启动异常，程序会显示错误提示，并尝试在
+%LOCALAPPDATA%\DiskLens\Logs\startup-latest.log 保存诊断日志。
 
 操作：
 1. 选择磁盘或文件夹开始扫描；可随时取消。
