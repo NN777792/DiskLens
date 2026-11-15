@@ -1,0 +1,46 @@
+name: Build Windows Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to update
+        required: true
+        default: v1.0.0
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-upload:
+    runs-on: windows-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish self-contained executable
+        shell: pwsh
+        run: >-
+          dotnet publish .\src\DiskCleanerAssistant\DiskCleanerAssistant.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+          -o .\artifacts
+
+      - name: Name release executable
+        shell: pwsh
+        run: Rename-Item .\artifacts\DiskCleanerAssistant.exe DiskLens-win-x64.exe
+
+      - name: Upload executable to release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release upload "${{ inputs.tag }}" .\artifacts\DiskLens-win-x64.exe --clobber
