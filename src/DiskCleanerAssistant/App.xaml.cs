@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Threading;
+using DiskCleanerAssistant.Utilities;
 
 namespace DiskCleanerAssistant;
 
@@ -9,9 +10,18 @@ public partial class App : Application
 
     public App()
     {
+        StartupDiagnostics.Mark("App constructor started");
         DispatcherUnhandledException += OnDispatcherUnhandledException;
         AppDomain.CurrentDomain.UnhandledException += OnDomainUnhandledException;
         TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+        StartupDiagnostics.Mark("App constructor completed");
+    }
+
+    protected override void OnStartup(StartupEventArgs e)
+    {
+        StartupDiagnostics.Mark("App.OnStartup started");
+        base.OnStartup(e);
+        StartupDiagnostics.Mark("App.OnStartup completed");
     }
 
     private static void OnDispatcherUnhandledException(
@@ -49,8 +59,7 @@ public partial class App : Application
     {
         try
         {
-            var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var logDirectory = Path.Combine(localAppData, ProductName, "logs");
+            var logDirectory = StartupDiagnostics.LogDirectory;
             Directory.CreateDirectory(logDirectory);
 
             var logPath = Path.Combine(

@@ -39,6 +39,13 @@ jobs:
           $process = Start-Process .\publish\DiskLens-win-x64\DiskLens.exe -PassThru
           Start-Sleep -Seconds 10
           if ($process.HasExited) {
+            $logDirectory = Join-Path $env:LOCALAPPDATA "DiskLens\logs"
+            if (Test-Path $logDirectory) {
+              Get-ChildItem $logDirectory -File | ForEach-Object {
+                Write-Host "--- $($_.Name) ---"
+                Get-Content $_.FullName
+              }
+            }
             throw "DiskLens exited during startup test with code $($process.ExitCode)."
           }
           Stop-Process -Id $process.Id -Force
