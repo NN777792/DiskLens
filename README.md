@@ -14,9 +14,9 @@
 
 ## 直接使用便携版
 
-从 GitHub Releases 下载 `DiskLens-win-x64.zip`，完整解压后进入 `DiskLens-win-x64` 文件夹，双击 `DiskLens.exe`。便携包已经包含 .NET 运行环境，不需要安装 Visual Studio 或 .NET。
+从 GitHub Releases 下载 `DiskLens-win-x64.zip`，解压后双击 `DiskLens.exe`。精简包只有程序和使用说明两个文件，程序已经包含 .NET 运行环境，不需要安装 Visual Studio 或 .NET。
 
-请保留压缩包内的全部文件，不要只把 `DiskLens.exe` 单独复制出来。如果程序报告运行错误，诊断日志位于 `%LOCALAPPDATA%\DiskLens\logs`。
+`DiskLens.exe` 可以单独复制和运行。如果程序报告运行错误，诊断日志位于 `%LOCALAPPDATA%\DiskLens\logs`。
 
 ## 开发环境
 
@@ -35,17 +35,19 @@ dotnet run --project .\src\DiskCleanerAssistant\DiskCleanerAssistant.csproj
 
 也可以用 Visual Studio 打开 `DiskCleanerAssistant.sln`，将 `DiskCleanerAssistant` 设为启动项目后运行。
 
-## 发布便携程序
+## 发布精简单文件程序
 
 ```powershell
 dotnet publish .\src\DiskCleanerAssistant\DiskCleanerAssistant.csproj `
   -c Release `
   -r win-x64 `
   --self-contained true `
-  -p:PublishSingleFile=false
+  -p:PublishSingleFile=true `
+  -p:IncludeNativeLibrariesForSelfExtract=true `
+  -p:EnableCompressionInSingleFile=true
 ```
 
-发布结果位于 `src\DiskCleanerAssistant\bin\Release\net8.0-windows\win-x64\publish`，发布时应完整压缩该目录。
+发布结果位于 `src\DiskCleanerAssistant\bin\Release\net8.0-windows\win-x64\publish`。
 
 ## 使用说明
 
