@@ -41,7 +41,7 @@
           <Border Style="{StaticResource Card}" Width="286" Margin="0,0,12,10" Padding="19,16">
             <StackPanel>
               <DockPanel><TextBlock Text="▣" Foreground="#5979E8" FontSize="22" Margin="0,0,10,0"/><StackPanel><TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="14"/><TextBlock Text="{Binding Kind}" Style="{StaticResource MutedText}" Margin="0,4,0,0"/></StackPanel></DockPanel>
-              <ProgressBar Value="{Binding Percent}" Foreground="{Binding BarBrush}" Margin="0,18,0,10"/>
+              <ProgressBar Value="{Binding Percent, Mode=OneWay}" Foreground="{Binding BarBrush}" Margin="0,18,0,10"/>
               <DockPanel><TextBlock Style="{StaticResource MutedText}"><Run Text="可用 "/><Run Text="{Binding FreeText}" Foreground="#27344D"/></TextBlock><TextBlock Text="{Binding TotalText}" Style="{StaticResource MutedText}" HorizontalAlignment="Right"/></DockPanel>
               <Button Content="扫描此磁盘  →" Tag="{Binding Root}" Click="DriveClick" Padding="10,7" Margin="0,14,0,0" IsEnabled="{Binding DataContext.IsIdle, RelativeSource={RelativeSource AncestorType=Window}}"/>
             </StackPanel>
@@ -68,7 +68,7 @@
             <Border Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource Card}" Padding="18,16"><DockPanel>
               <StackPanel DockPanel.Dock="Top" Margin="0,0,0,18"><TextBlock Text="文件类型" FontWeight="SemiBold" FontSize="14"/><TextBlock Text="整个扫描范围的分布" Style="{StaticResource MutedText}" Margin="0,4,0,0"/></StackPanel>
               <ScrollViewer VerticalScrollBarVisibility="Auto"><ItemsControl ItemsSource="{Binding Categories}"><ItemsControl.ItemTemplate><DataTemplate>
-                <StackPanel Margin="0,0,0,20"><DockPanel><TextBlock Text="●" Foreground="{Binding Color}" Margin="0,0,7,0"/><TextBlock Text="{Binding Name}" FontSize="12"/><TextBlock Text="{Binding Size}" FontWeight="SemiBold" HorizontalAlignment="Right" FontSize="12"/></DockPanel><ProgressBar Value="{Binding Percent}" Foreground="{Binding Color}" Height="4" Margin="0,8,0,5"/><TextBlock Text="{Binding Count}" Style="{StaticResource MutedText}" FontSize="10"/></StackPanel>
+                <StackPanel Margin="0,0,0,20"><DockPanel><TextBlock Text="●" Foreground="{Binding Color}" Margin="0,0,7,0"/><TextBlock Text="{Binding Name}" FontSize="12"/><TextBlock Text="{Binding Size}" FontWeight="SemiBold" HorizontalAlignment="Right" FontSize="12"/></DockPanel><ProgressBar Value="{Binding Percent, Mode=OneWay}" Foreground="{Binding Color}" Height="4" Margin="0,8,0,5"/><TextBlock Text="{Binding Count}" Style="{StaticResource MutedText}" FontSize="10"/></StackPanel>
               </DataTemplate></ItemsControl.ItemTemplate></ItemsControl></ScrollViewer>
             </DockPanel></Border>
             <Border Grid.Row="1" Style="{StaticResource Card}" Padding="0" Margin="0,0,14,0"><Grid><Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/></Grid.RowDefinitions>
