@@ -18,6 +18,7 @@ public partial class MainWindow : Window
         _viewModel = new MainViewModel(
             new DriveService(),
             new DirectoryScanner(),
+            new JunkScanner(),
             new RecycleBinService(),
             new DialogService(),
             new FileExplorerService());
