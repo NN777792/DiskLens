@@ -7,6 +7,7 @@ namespace DiskCleanerAssistant;
 public partial class App : Application
 {
     private const string ProductName = "DiskLens";
+    private static int _isHandlingFatalError;
 
     public App()
     {
@@ -28,6 +29,12 @@ public partial class App : Application
         object sender,
         DispatcherUnhandledExceptionEventArgs e)
     {
+        if (Interlocked.Exchange(ref _isHandlingFatalError, 1) != 0)
+        {
+            e.Handled = false;
+            return;
+        }
+
         var logPath = WriteErrorLog("界面线程", e.Exception);
         var logMessage = logPath is null
             ? "错误日志未能写入。"
@@ -39,6 +46,7 @@ public partial class App : Application
             MessageBoxButton.OK,
             MessageBoxImage.Error);
         e.Handled = true;
+        Current.Shutdown(1);
     }
 
     private static void OnDomainUnhandledException(object? sender, UnhandledExceptionEventArgs e)
