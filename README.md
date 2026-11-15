@@ -1,90 +1,66 @@
-# 清简 · 磁盘助手 / DiskLens
+# 磁盘清理助手
 
-Windows 桌面磁盘工具，C# + WPF，预览版 0.1.0。
+一个面向 Windows 的本地磁盘空间分析与大文件清理工具。第一版聚焦三个动作：看清空间占用、筛选大文件、确认后移入回收站。
 
-第一版实现真实磁盘扫描、空间分析和带确认步骤的回收站清理。应用无需登录，不上传文件或扫描结果，不请求管理员权限。
+## 已实现
 
-## 运行
+- 展示本机固定磁盘的容量、已用空间和可用空间。
+- 扫描整块磁盘或指定文件夹，统计一级目录占用。
+- 按 100 MB、500 MB、1 GB、2 GB、5 GB 阈值查找大文件。
+- 按视频、压缩包、安装包、图片、文档等类型筛选，并支持名称/路径搜索。
+- 扫描可随时取消；无权限目录会跳过并计数；重解析点会跳过以避免目录循环。
+- 手动勾选候选文件，清理前二次确认，文件默认移入 Windows 回收站。
+- 清理后立即更新候选列表、目录统计和磁盘容量。
 
-便携版面向 **Windows 10 22H2 / Windows 11，x64**。解压后双击 `DiskLens.exe`。应用自带 .NET 10 桌面运行时，无需另装 .NET；首次启动会在用户临时目录解包原生运行库。ARM64 可通过源码单独发布。
+## 运行环境
 
-便携包尚未代码签名。当前在 Linux 上完成交叉编译和核心测试，**WPF 窗口和 Windows Shell 回收站操作尚未在 Windows 上实际验收**。请先按照 [Windows 验收清单](docs/WINDOWS-ACCEPTANCE.md) 使用专门的测试目录验证，再用于日常文件。
+- Windows 10 1809 或更高版本，推荐 Windows 11。
+- [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)。
+- Visual Studio 2022 可选；如使用 Visual Studio，请安装“.NET 桌面开发”工作负载。
 
-## 使用流程
+## 启动
 
-1. 点击 C、D、E 等实际存在的磁盘的“扫描此磁盘”，或选择具体文件夹。
-2. 扫描可以随时取消；取消后展示已读取的部分结果。无权限目录、链接、云盘占位项目会跳过并记录。
-3. 在空间图点击文件夹下钻，或双击目录排行。可返回上一级或扫描根目录。文件类型图始终覆盖整个扫描范围。
-4. 在“大文件”页按名称、路径和大小筛选，打开所在位置，手动勾选不需要的个人文件。体积大不等于垃圾文件。
-5. 在“安全清理”页核实临时文件建议。只推荐当前用户 `LocalAppData\Temp` 中至少 7 天未修改的普通文件；所有项目默认不选中。
-6. 点击“查看清理清单”，核对完整路径、大小和理由，勾选确认后移入回收站。
-7. 查看操作结果和历史记录。恢复请在 Windows 回收站选择文件并点击“还原”。
-
-**移入回收站通常不会立即释放磁盘空间。** 应用不提供永久删除或清空回收站。若你已自行确认不再需要回收站内的内容，可以使用 Windows 自带功能处理。图表为扫描时的快照，操作后请重新扫描。
-
-## 已实现的范围
-
-- 自动枚举可用的本地固定磁盘和可移动磁盘，展示总容量、可用空间及使用率。
-- 后台扫描、节流进度更新、取消和部分结果标记。
-- 子目录聚合、可下钻矩形空间图、目录排行、文件类型统计。
-- 最多保留 500 个最大的文件，可筛选、排序、打开所在位置和选择清理。
-- 最多保留 2,000 个临时文件建议；跨列表选中状态同步，默认全部不选。
-- 清理前确认、逐文件重新验证、Windows 原生回收站操作、结果和本地操作记录。
-- 扫描只读取文件元数据，不打开文件内容。扫描本身不执行移动、重命名或删除。
-
-## 清理保护
-
-- Windows、Program Files、ProgramData、AppData 等系统和程序目录不可清理，只有上述当前用户临时目录有明确例外。
-- 系统、隐藏、只读、离线文件，以及文件或任一父目录存在重解析点的项目不可清理。
-- 执行前核对文件大小、UTC 修改时间、属性和路径。文件发生变化、消失或不可访问时跳过。
-- 仅本地固定磁盘执行回收站操作。网络盘和可移动磁盘只做分析，不执行清理。
-- 使用 Windows `IFileOperation`，设置 `FOFX_RECYCLEONDELETE`；非回收传输在回调中拒绝。不调用永久删除 API，也不进行永久删除回退。
-- 必须先持久化操作意图；写入失败时不操作文件。结果记录写入失败时停止后续操作。
-- 记录在 `%LOCALAPPDATA%\DiskLens\History\*.jsonl`，包含完整文件路径。数据只保存在本地。
-
-这些规则不能识别全部软件依赖；年龄与文件名不能证明文件无用。目录及文件的重新检查与 Shell 操作间仍存在竞态窗口，不是面向恶意并发替换的安全边界。
-
-## 统计与性能边界
-
-- 图表统计**逻辑字节数**。NTFS 压缩、稀疏文件、硬链接、系统保留和无法访问目录会导致统计与磁盘已用空间不同；硬链接可能重复计数。
-- 不跟随重解析点，因此部分 OneDrive 实体文件也可能被跳过。无权限目录不自动提权。
-- 每次扫描最多发现 250,000 个目录；达到上限会明确标记部分结果，建议缩小扫描范围。
-- 目录排行最多显示当前层前 1,000 项。空间图显示最大的 60 个子目录，其余合并为“其他文件夹”。“本层文件”是直接文件大小合计。
-- 大文件筛选仅作用于已保留的最大 500 项，不是整个磁盘的完整搜索。临时建议达 2,000 项后不继续收集；无“全部垃圾文件已找到”的保证。
-- 扫描错误详情最多保留 500 条，跳过计数持续累计。操作历史最多展示最近 200 个记录文件。
-- 这是按需扫描工具，第一版未实现实时索引、重复文件检测、后台计划、软件卸载、系统更新清理或自动永久删除。
-
-## 开发与构建
-
-安装 [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)。Windows 推荐 Visual Studio 2026 或支持 .NET 10 的编辑器。
+在项目根目录执行：
 
 ```powershell
-# 编译
-dotnet build src/DiskLens.App -c Release
-
-# 运行核心回归测试（Windows / Linux）
-dotnet run --project tests/DiskLens.Core.Tests -c Release
-
-# Windows 启动
-dotnet run --project src/DiskLens.App
-
-# 一键测试与发布 x64 便携版
-./scripts/build.ps1
-
-# ARM64 发布
-./scripts/build.ps1 -Runtime win-arm64
+dotnet restore
+dotnet run --project .\src\DiskCleanerAssistant\DiskCleanerAssistant.csproj
 ```
 
-Linux 可交叉编译 Windows 目标，无法原生运行 WPF。发布不要启用裁剪，WPF 和 COM 互操作需要相应运行时组件。测试为无第三方依赖的可执行回归套件，以退出码表示成功或失败。
+也可以用 Visual Studio 打开 `DiskCleanerAssistant.sln`，将 `DiskCleanerAssistant` 设为启动项目后运行。
 
-## 项目结构
+## 发布单文件程序
+
+```powershell
+dotnet publish .\src\DiskCleanerAssistant\DiskCleanerAssistant.csproj `
+  -c Release `
+  -r win-x64 `
+  --self-contained true `
+  -p:PublishSingleFile=true
+```
+
+发布结果位于 `src\DiskCleanerAssistant\bin\Release\net8.0-windows\win-x64\publish`。
+
+## 使用说明
+
+1. 在顶部选择磁盘卡片，或通过“选择文件夹”指定扫描范围。
+2. 选择大文件阈值并开始扫描。
+3. 在左侧查看一级目录占用，在右侧筛选和勾选大文件。
+4. 点击“移入回收站”，核对文件数量及预计释放空间后确认。
+
+建议先用普通用户权限运行。Windows、Program Files 等受保护目录无法读取时会自动跳过；无需为了完整扫描而使用管理员权限。
+
+## 代码结构
 
 ```text
-src/DiskLens.Core/       扫描、模型、路径保护、清理策略和清理编排
-src/DiskLens.App/        WPF 界面、ViewModel、空间图、Shell 回收站和 JSONL 记录
-tests/DiskLens.Core.Tests/  核心回归套件（测试目录和模拟回收器）
-scripts/build.ps1       测试与便携版发布
-docs/                   架构和 Windows 验收清单
+src/DiskCleanerAssistant/
+├── Commands/       ICommand 实现
+├── Models/         磁盘、目录、文件和扫描结果模型
+├── Services/       磁盘枚举、目录扫描、回收站和系统对话框
+├── Utilities/      文件大小格式化
+├── ViewModels/     主界面状态与操作流程
+├── App.xaml        全局主题和控件样式
+└── MainWindow.xaml 主界面
 ```
 
-尚未代码签名，没有安装器，也未做 Microsoft Store 发布。
+后续的垃圾规则扫描和重复文件查找可以作为新的 `Services` 接口接入，共用现有的勾选、确认和回收站清理流程。

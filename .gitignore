@@ -1,5 +1,7 @@
-**/bin/
-**/obj/
+bin/
+obj/
 .vs/
-artifacts/
 *.user
+*.suo
+*.cache
+TestResults/
