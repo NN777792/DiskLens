@@ -5,9 +5,14 @@
     <UseWPF>true</UseWPF>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon />
-    <AssemblyName>DiskCleanerAssistant</AssemblyName>
+    <AssemblyName>DiskLens</AssemblyName>
     <RootNamespace>DiskCleanerAssistant</RootNamespace>
     <Platforms>AnyCPU;x64</Platforms>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
+    <Product>DiskLens 磁盘清理助手</Product>
+    <Description>Windows 本地磁盘空间分析与大文件清理工具</Description>
   </PropertyGroup>
 </Project>

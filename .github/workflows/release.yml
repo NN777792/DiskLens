@@ -6,7 +6,7 @@ on:
       tag:
         description: Release tag to update
         required: true
-        default: v1.0.0
+        default: v1.0.1
 
 permissions:
   contents: write
@@ -23,24 +23,36 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      - name: Publish self-contained executable
+      - name: Publish portable Windows folder
         shell: pwsh
         run: >-
           dotnet publish .\src\DiskCleanerAssistant\DiskCleanerAssistant.csproj
           -c Release
           -r win-x64
           --self-contained true
-          -p:PublishSingleFile=true
-          -p:IncludeNativeLibrariesForSelfExtract=true
-          -p:EnableCompressionInSingleFile=true
-          -o .\artifacts
+          -p:PublishSingleFile=false
+          -o .\publish\DiskLens-win-x64
 
-      - name: Name release executable
+      - name: Test application startup
         shell: pwsh
-        run: Rename-Item .\artifacts\DiskCleanerAssistant.exe DiskLens-win-x64.exe
+        run: |
+          $process = Start-Process .\publish\DiskLens-win-x64\DiskLens.exe -PassThru
+          Start-Sleep -Seconds 10
+          if ($process.HasExited) {
+            throw "DiskLens exited during startup test with code $($process.ExitCode)."
+          }
+          Stop-Process -Id $process.Id -Force
 
-      - name: Upload executable to release
+      - name: Create portable archive
+        shell: pwsh
+        run: |
+          Remove-Item .\publish\DiskLens-win-x64\*.pdb -ErrorAction SilentlyContinue
+          Copy-Item .\docs\PORTABLE-README.txt .\publish\DiskLens-win-x64\README.txt
+          New-Item -ItemType Directory -Path .\artifacts -Force | Out-Null
+          Compress-Archive -Path .\publish\DiskLens-win-x64 -DestinationPath .\artifacts\DiskLens-win-x64.zip -CompressionLevel Optimal
+
+      - name: Upload portable archive to release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload "${{ inputs.tag }}" .\artifacts\DiskLens-win-x64.exe --clobber
+        run: gh release upload "${{ inputs.tag }}" .\artifacts\DiskLens-win-x64.zip --clobber

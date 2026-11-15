@@ -12,7 +12,13 @@
 - 手动勾选候选文件，清理前二次确认，文件默认移入 Windows 回收站。
 - 清理后立即更新候选列表、目录统计和磁盘容量。
 
-## 运行环境
+## 直接使用便携版
+
+从 GitHub Releases 下载 `DiskLens-win-x64.zip`，完整解压后进入 `DiskLens-win-x64` 文件夹，双击 `DiskLens.exe`。便携包已经包含 .NET 运行环境，不需要安装 Visual Studio 或 .NET。
+
+请保留压缩包内的全部文件，不要只把 `DiskLens.exe` 单独复制出来。如果程序报告运行错误，诊断日志位于 `%LOCALAPPDATA%\DiskLens\logs`。
+
+## 开发环境
 
 - Windows 10 1809 或更高版本，推荐 Windows 11。
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)。
@@ -29,17 +35,17 @@ dotnet run --project .\src\DiskCleanerAssistant\DiskCleanerAssistant.csproj
 
 也可以用 Visual Studio 打开 `DiskCleanerAssistant.sln`，将 `DiskCleanerAssistant` 设为启动项目后运行。
 
-## 发布单文件程序
+## 发布便携程序
 
 ```powershell
 dotnet publish .\src\DiskCleanerAssistant\DiskCleanerAssistant.csproj `
   -c Release `
   -r win-x64 `
   --self-contained true `
-  -p:PublishSingleFile=true
+  -p:PublishSingleFile=false
 ```
 
-发布结果位于 `src\DiskCleanerAssistant\bin\Release\net8.0-windows\win-x64\publish`。
+发布结果位于 `src\DiskCleanerAssistant\bin\Release\net8.0-windows\win-x64\publish`，发布时应完整压缩该目录。
 
 ## 使用说明
 
@@ -60,6 +66,7 @@ src/DiskCleanerAssistant/
 ├── Utilities/      文件大小格式化
 ├── ViewModels/     主界面状态与操作流程
 ├── App.xaml        全局主题和控件样式
+├── app.manifest    Windows 兼容性与普通用户权限清单
 └── MainWindow.xaml 主界面
 ```
 
