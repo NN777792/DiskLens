@@ -7,6 +7,7 @@
         Height="820"
         MinWidth="1080"
         MinHeight="680"
+        Icon="Assets/DiskLens.ico"
         WindowStartupLocation="CenterScreen"
         Background="{StaticResource CanvasBrush}"
         Closing="Window_Closing">
@@ -27,8 +28,8 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel Grid.Row="0">
-                    <Border Width="44" Height="44" CornerRadius="12" Background="{StaticResource PrimaryBrush}" HorizontalAlignment="Left">
-                        <TextBlock Text="D" FontSize="21" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    <Border Width="52" Height="52" CornerRadius="13" Background="#091A25" HorizontalAlignment="Left" ClipToBounds="True">
+                        <Image Source="Assets/DiskLens.png" Stretch="UniformToFill" />
                     </Border>
                     <TextBlock Text="磁盘清理助手" Foreground="White" FontSize="19" FontWeight="SemiBold" Margin="0,12,0,0" />
                     <TextBlock Text="看清空间，放心清理" Foreground="#94A0B8" FontSize="12" Margin="0,5,0,0" />
@@ -52,7 +53,9 @@
                                     <ColumnDefinition Width="28" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="◫" Foreground="#9DB0FF" FontSize="18" VerticalAlignment="Center" />
+                                <Border Width="21" Height="21" CornerRadius="5" ClipToBounds="True" VerticalAlignment="Center">
+                                    <Image Source="Assets/DiskLens.png" Stretch="UniformToFill" />
+                                </Border>
                                 <TextBlock Grid.Column="1" Text="空间分析" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
                             </Grid>
                         </Border>
@@ -74,7 +77,9 @@
                                     <ColumnDefinition Width="28" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="◇" Foreground="#9DB0FF" FontSize="17" VerticalAlignment="Center" />
+                                <Border Width="21" Height="21" CornerRadius="5" ClipToBounds="True" VerticalAlignment="Center">
+                                    <Image Source="Assets/DiskLens.png" Stretch="UniformToFill" />
+                                </Border>
                                 <TextBlock Grid.Column="1" Text="垃圾清理" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
                             </Grid>
                         </Border>

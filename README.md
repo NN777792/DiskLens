@@ -1,5 +1,7 @@
 # 磁盘清理助手
 
+<img src="src/DiskCleanerAssistant/Assets/DiskLens.png" alt="DiskLens 图标" width="128" />
+
 一个面向 Windows 的本地磁盘空间分析与大文件清理工具。第一版聚焦三个动作：看清空间占用、筛选大文件、确认后移入回收站。
 
 ## 已实现

@@ -9,10 +9,15 @@
     <RootNamespace>DiskCleanerAssistant</RootNamespace>
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationManifest>app.manifest</ApplicationManifest>
-    <Version>1.1.0</Version>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
+    <ApplicationIcon>Assets\DiskLens.ico</ApplicationIcon>
+    <Version>1.1.1</Version>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
     <Product>DiskLens 磁盘清理助手</Product>
     <Description>Windows 本地磁盘空间分析与大文件清理工具</Description>
   </PropertyGroup>
+  <ItemGroup>
+    <Resource Include="Assets\DiskLens.png" />
+    <Resource Include="Assets\DiskLens.ico" />
+  </ItemGroup>
 </Project>
