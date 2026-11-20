@@ -10,9 +10,9 @@
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Assets\DiskLens.ico</ApplicationIcon>
-    <Version>1.1.1</Version>
-    <AssemblyVersion>1.1.1.0</AssemblyVersion>
-    <FileVersion>1.1.1.0</FileVersion>
+    <Version>1.1.2</Version>
+    <AssemblyVersion>1.1.2.0</AssemblyVersion>
+    <FileVersion>1.1.2.0</FileVersion>
     <Product>DiskLens 磁盘清理助手</Product>
     <Description>Windows 本地磁盘空间分析与大文件清理工具</Description>
   </PropertyGroup>

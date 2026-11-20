@@ -30,13 +30,10 @@ public sealed class MainViewModel : ViewModelBase
     private TimeSpan _elapsed;
     private int _selectedCount;
     private long _selectedBytes;
-    private bool _isSpaceAnalysisVisible = true;
-    private bool _isJunkCleanupVisible;
 
     public MainViewModel(
         IDriveService driveService,
         IDirectoryScanner directoryScanner,
-        IJunkScanner junkScanner,
         IRecycleBinService recycleBinService,
         IDialogService dialogService,
         IFileExplorerService fileExplorerService)
@@ -46,7 +43,6 @@ public sealed class MainViewModel : ViewModelBase
         _recycleBinService = recycleBinService;
         _dialogService = dialogService;
         _fileExplorerService = fileExplorerService;
-        JunkCleanup = new JunkCleanupViewModel(junkScanner, recycleBinService, dialogService);
 
         SizeOptions =
         [
@@ -72,8 +68,6 @@ public sealed class MainViewModel : ViewModelBase
         DeleteSelectedCommand = new AsyncRelayCommand(DeleteSelectedAsync, CanDeleteSelected);
         OpenFileLocationCommand = new RelayCommand(OpenFileLocation, parameter => parameter is FileItem);
         OpenFolderCommand = new RelayCommand(OpenFolder, parameter => parameter is FolderUsageItem);
-        ShowSpaceAnalysisCommand = new RelayCommand(ShowSpaceAnalysis);
-        ShowJunkCleanupCommand = new RelayCommand(ShowJunkCleanup);
 
         RefreshDrives();
     }
@@ -84,7 +78,6 @@ public sealed class MainViewModel : ViewModelBase
     public IReadOnlyList<SizeOption> SizeOptions { get; }
     public IReadOnlyList<string> FileTypes { get; }
     public ICollectionView FilteredFiles { get; }
-    public JunkCleanupViewModel JunkCleanup { get; }
 
     public RelayCommand RefreshDrivesCommand { get; }
     public RelayCommand SelectDriveCommand { get; }
@@ -96,20 +89,6 @@ public sealed class MainViewModel : ViewModelBase
     public AsyncRelayCommand DeleteSelectedCommand { get; }
     public RelayCommand OpenFileLocationCommand { get; }
     public RelayCommand OpenFolderCommand { get; }
-    public RelayCommand ShowSpaceAnalysisCommand { get; }
-    public RelayCommand ShowJunkCleanupCommand { get; }
-
-    public bool IsSpaceAnalysisVisible
-    {
-        get => _isSpaceAnalysisVisible;
-        private set => SetProperty(ref _isSpaceAnalysisVisible, value);
-    }
-
-    public bool IsJunkCleanupVisible
-    {
-        get => _isJunkCleanupVisible;
-        private set => SetProperty(ref _isJunkCleanupVisible, value);
-    }
 
     public string ScanPath
     {
@@ -272,23 +251,7 @@ public sealed class MainViewModel : ViewModelBase
     public string ElapsedText => Elapsed == TimeSpan.Zero ? "--" : $"{Elapsed.TotalSeconds:0.0} 秒";
     public string SelectedSummaryText => $"已选择 {SelectedCount:N0} 个文件，共 {ByteSizeFormatter.Format(SelectedBytes)}";
 
-    public void Stop()
-    {
-        CancelScan();
-        JunkCleanup.Stop();
-    }
-
-    private void ShowSpaceAnalysis()
-    {
-        IsSpaceAnalysisVisible = true;
-        IsJunkCleanupVisible = false;
-    }
-
-    private void ShowJunkCleanup()
-    {
-        IsSpaceAnalysisVisible = false;
-        IsJunkCleanupVisible = true;
-    }
+    public void Stop() => CancelScan();
 
     private void RefreshDrives()
     {

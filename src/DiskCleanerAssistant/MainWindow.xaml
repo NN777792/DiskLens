@@ -36,54 +36,9 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="2">
-                    <Button Command="{Binding ShowSpaceAnalysisCommand}" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand" Margin="0,0,0,8">
-                        <Border CornerRadius="8" Padding="12,11">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsSpaceAnalysisVisible}" Value="True">
-                                            <Setter Property="Background" Value="#27334B" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="28" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Border Width="21" Height="21" CornerRadius="5" ClipToBounds="True" VerticalAlignment="Center">
-                                    <Image Source="Assets/DiskLens.png" Stretch="UniformToFill" />
-                                </Border>
-                                <TextBlock Grid.Column="1" Text="空间分析" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
-                            </Grid>
-                        </Border>
-                    </Button>
-                    <Button Command="{Binding ShowJunkCleanupCommand}" Background="Transparent" BorderThickness="0" Padding="0" Cursor="Hand">
-                        <Border CornerRadius="8" Padding="12,11">
-                            <Border.Style>
-                                <Style TargetType="Border">
-                                    <Setter Property="Background" Value="Transparent" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding IsJunkCleanupVisible}" Value="True">
-                                            <Setter Property="Background" Value="#27334B" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Border.Style>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="28" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <Border Width="21" Height="21" CornerRadius="5" ClipToBounds="True" VerticalAlignment="Center">
-                                    <Image Source="Assets/DiskLens.png" Stretch="UniformToFill" />
-                                </Border>
-                                <TextBlock Grid.Column="1" Text="垃圾清理" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
-                            </Grid>
-                        </Border>
-                    </Button>
+                    <Border Background="#27334B" CornerRadius="8" Padding="15,12">
+                        <TextBlock Text="空间分析" Foreground="White" FontWeight="SemiBold" VerticalAlignment="Center" />
+                    </Border>
                 </StackPanel>
 
                 <Border Grid.Row="4" Background="#202C42" CornerRadius="8" Padding="12">
@@ -95,8 +50,7 @@
             </Grid>
         </Border>
 
-        <Grid Grid.Column="1" Margin="26,20,26,22"
-              Visibility="{Binding IsSpaceAnalysisVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+        <Grid Grid.Column="1" Margin="26,20,26,22">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="14" />
@@ -373,158 +327,5 @@
             </Border>
         </Grid>
 
-        <Grid Grid.Column="1" Margin="26,20,26,22"
-              Visibility="{Binding IsJunkCleanupVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="16" />
-                <RowDefinition Height="88" />
-                <RowDefinition Height="16" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <StackPanel>
-                    <TextBlock Text="垃圾清理" FontSize="25" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" />
-                    <TextBlock Text="扫描常见临时文件和缓存，确认后移入 Windows 回收站" Foreground="{StaticResource MutedTextBrush}" FontSize="12" Margin="0,5,0,0" />
-                </StackPanel>
-                <Button Grid.Column="1" Content="停止扫描" Command="{Binding JunkCleanup.CancelScanCommand}" Style="{StaticResource SecondaryButton}" VerticalAlignment="Center"
-                        Visibility="{Binding JunkCleanup.IsScanning, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                <Button Grid.Column="3" Content="扫描垃圾" Command="{Binding JunkCleanup.ScanCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Center" MinWidth="100" />
-            </Grid>
-
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="12" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="12" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="12" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Border Grid.Column="0" Style="{StaticResource CardBorder}" Padding="16,12">
-                    <StackPanel>
-                        <TextBlock Text="候选文件" Foreground="{StaticResource MutedTextBrush}" FontSize="10" />
-                        <TextBlock Text="{Binding JunkCleanup.ScannedFileCountText}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="SemiBold" Margin="0,6,0,0" />
-                    </StackPanel>
-                </Border>
-                <Border Grid.Column="2" Style="{StaticResource CardBorder}" Padding="16,12">
-                    <StackPanel>
-                        <TextBlock Text="可清理空间" Foreground="{StaticResource MutedTextBrush}" FontSize="10" />
-                        <TextBlock Text="{Binding JunkCleanup.ScannedBytesText}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="SemiBold" Margin="0,6,0,0" />
-                    </StackPanel>
-                </Border>
-                <Border Grid.Column="4" Style="{StaticResource CardBorder}" Padding="16,12">
-                    <StackPanel>
-                        <TextBlock Text="扫描耗时" Foreground="{StaticResource MutedTextBrush}" FontSize="10" />
-                        <TextBlock Text="{Binding JunkCleanup.ElapsedText}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="SemiBold" Margin="0,6,0,0" />
-                    </StackPanel>
-                </Border>
-                <Border Grid.Column="6" Style="{StaticResource CardBorder}" Padding="16,12">
-                    <StackPanel>
-                        <TextBlock Text="受保护项目" Foreground="{StaticResource MutedTextBrush}" FontSize="10" />
-                        <TextBlock Text="{Binding JunkCleanup.SkippedCountText}" Foreground="{StaticResource TextBrush}" FontSize="17" FontWeight="SemiBold" Margin="0,6,0,0" />
-                    </StackPanel>
-                </Border>
-            </Grid>
-
-            <Border Grid.Row="4" Style="{StaticResource CardBorder}" Padding="18,15">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="12" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-
-                    <Grid Grid.Row="0">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel>
-                            <TextBlock Text="清理项目" FontWeight="SemiBold" Foreground="{StaticResource TextBrush}" FontSize="14" />
-                            <TextBlock Text="{Binding JunkCleanup.StatusText}" Foreground="{StaticResource MutedTextBrush}" FontSize="10" Margin="0,4,0,0" />
-                        </StackPanel>
-                        <TextBlock Grid.Column="1" Text="{Binding JunkCleanup.CurrentPath}" Foreground="{StaticResource MutedTextBrush}" FontSize="9" MaxWidth="430" TextTrimming="CharacterEllipsis" VerticalAlignment="Center" />
-                    </Grid>
-
-                    <Border Grid.Row="2" BorderBrush="#E7EAF0" BorderThickness="1" CornerRadius="8">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
-                            <Grid Background="#F5F7FA" Height="38">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="48" />
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="110" />
-                                    <ColumnDefinition Width="110" />
-                                    <ColumnDefinition Width="100" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="1" Text="项目" Foreground="#606A7C" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="2" Text="建议" Foreground="#606A7C" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="3" Text="文件数" Foreground="#606A7C" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                <TextBlock Grid.Column="4" Text="占用" Foreground="#606A7C" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" />
-                            </Grid>
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                <ItemsControl ItemsSource="{Binding JunkCleanup.Categories}">
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderBrush="#EEF0F4" BorderThickness="0,0,0,1" Padding="0,12">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="48" />
-                                                        <ColumnDefinition Width="*" />
-                                                        <ColumnDefinition Width="110" />
-                                                        <ColumnDefinition Width="110" />
-                                                        <ColumnDefinition Width="100" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                    <StackPanel Grid.Column="1">
-                                                        <TextBlock Text="{Binding Name}" Foreground="{StaticResource TextBrush}" FontSize="12" FontWeight="SemiBold" />
-                                                        <TextBlock Text="{Binding Description}" Foreground="{StaticResource MutedTextBrush}" FontSize="9" TextWrapping="Wrap" Margin="0,4,16,0" />
-                                                    </StackPanel>
-                                                    <TextBlock Grid.Column="2" Text="{Binding SafetyText}" Foreground="#526BD7" FontSize="10" VerticalAlignment="Center" />
-                                                    <TextBlock Grid.Column="3" Text="{Binding FileCountText}" Foreground="{StaticResource TextBrush}" FontSize="10" VerticalAlignment="Center" />
-                                                    <TextBlock Grid.Column="4" Text="{Binding SizeText}" Foreground="{StaticResource TextBrush}" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center" />
-                                                </Grid>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                            </ScrollViewer>
-                        </Grid>
-                    </Border>
-
-                    <Grid Grid.Row="4">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="12" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <Button Content="选择推荐项" Command="{Binding JunkCleanup.SelectRecommendedCommand}" Style="{StaticResource SecondaryButton}" Padding="12,6" />
-                        <Button Grid.Column="1" Content="取消选择" Command="{Binding JunkCleanup.ClearSelectionCommand}" Style="{StaticResource SecondaryButton}" Padding="12,6" Margin="8,0,0,0" />
-                        <TextBlock Grid.Column="3" Text="{Binding JunkCleanup.SelectedSummaryText}" Foreground="{StaticResource MutedTextBrush}" VerticalAlignment="Center" FontSize="11" />
-                        <Button Grid.Column="5" Content="移入回收站" Command="{Binding JunkCleanup.CleanSelectedCommand}" Style="{StaticResource PrimaryButton}" Padding="16,7" />
-                    </Grid>
-
-                    <ProgressBar Grid.RowSpan="5" Height="3" VerticalAlignment="Top" IsIndeterminate="True" Foreground="{StaticResource PrimaryBrush}" BorderThickness="0"
-                                 Visibility="{Binding JunkCleanup.IsBusy, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
-                </Grid>
-            </Border>
-        </Grid>
     </Grid>
 </Window>
